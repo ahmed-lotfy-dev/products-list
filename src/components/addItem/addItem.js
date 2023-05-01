@@ -1,38 +1,63 @@
-import React, {Component} from 'react';
+import React, { useContext, useRef, useState } from "react"
+import { ProductsContext } from "../../App"
 
-class addItem extends Component {
-    state = {
-        product: '',
-        price: ''
-    }
+const AddItem = () => {
+  const [product, setProduct] = useState("")
+  const [price, setPrice] = useState("")
+  const { items, setItems } = useContext(ProductsContext)
 
-    handleChange = (e) => {
-        console.log(e.target.id + ": " + e.target.value)
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
+  const productInputRef = useRef(null)
+  const priceInputRef = useRef(null)
 
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.props.add(this.state)
-        this.setState({
-            product: '',
-            price: ''
-        })
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-    render(){
-        return(
-            <div className="item">
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" value={this.state.product} placeholder="Enter Product" id="product" onChange={this.handleChange} required/>
-                    <input type="number" value={this.state.price} placeholder="Enter Price" id="price" onChange={this.handleChange} required/>
-                    <input type="submit" value="Add"/>
-                </form>
-            </div>
-        )
+    const isExisted = items.find((item) => item.product === product)
+
+    if (!product || !price) {
+      return
     }
+    if (isExisted) {
+      alert(`${product} already exists in the list.`)
+      return
+    }
+    const item = { id: items.length + 1, product, price }
+    setItems([...items, item])
+
+    // Clear the input fields
+    setProduct("")
+    setPrice("")
+    productInputRef.current.value = ""
+    priceInputRef.current.value = ""
+  }
+
+  return (
+    <div className="item">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Enter Product"
+          id="product"
+          ref={productInputRef}
+          onChange={(e) => {
+            setProduct(e.target.value)
+          }}
+          required
+        />
+        <input
+          type="number"
+          placeholder="Enter Price"
+          id="price"
+          ref={priceInputRef}
+          onChange={(e) => {
+            setPrice(e.target.value)
+          }}
+          required
+        />
+        <input type="submit" value="Add" />
+      </form>
+    </div>
+  )
 }
 
-export default addItem;
+export default AddItem

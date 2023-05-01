@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ProductsContext } from '../../App';
 
-const Total = (props) => {
-    const {items} = props;
-    let total = 0
-    for (let i = 0; i < items.length; i++) {
-        total += parseFloat(items[i].price)
-    }
-    return (
-        <div>
-            <p className="text">Total Price: {total}</p>
-        </div>
-    )
+const Total = () => {
+  const { items, setItems } = useContext(ProductsContext)
+
+  let total = 0
+  for (let i = 0; i < items.length; i++) {
+    total += parseFloat(items[i].price)
+  }
+  return (
+    <div>
+      <p className="text">Total Price: {total}</p>
+    </div>
+  )
 }
 
 export default Total
