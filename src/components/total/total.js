@@ -1,18 +1,23 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ProductsContext } from '../../App';
 
 const Total = () => {
-  const { items, setItems } = useContext(ProductsContext)
+  const { items } = useContext(ProductsContext);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  let total = 0
-  for (let i = 0; i < items.length; i++) {
-    total += parseFloat(items[i].price)
-  }
+  useEffect(() => {
+    let total = 0;
+    items.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    setTotalPrice(total);
+  }, [items]);
+
   return (
     <div>
-      <p className="text">Total Price: {total}</p>
+      <p className="text">Total Price: {totalPrice}</p>
     </div>
-  )
-}
+  );
+};
 
-export default Total
+export default Total;

@@ -8,8 +8,8 @@ export const ProductsContext = createContext();
 
 const App = () => {
   const [items, setItems] = useState([
-    { id: 1, product: 'Pen', price: 2 },
-    { id: 2, product: 'Book', price: 10 }
+    { id: 1, product: 'Pen', quantity: 5, price: 2 },
+    { id: 2, product: 'Book', quantity: 6, price: 10 }
   ]);
 
   return (
